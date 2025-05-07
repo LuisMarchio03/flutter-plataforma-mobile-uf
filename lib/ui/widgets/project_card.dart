@@ -6,11 +6,13 @@ import '../screens/project_details_not_register.dart';
 class ProjectCard extends StatelessWidget {
   final Project project;
   final bool ongoing;
+  final String? status;
 
   const ProjectCard({
     super.key, 
     required this.project,
     required this.ongoing,
+    this.status,
   });
 
   @override

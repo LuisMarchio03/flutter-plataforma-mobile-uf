@@ -34,4 +34,33 @@ class ProjectService {
       throw Exception(e.toString());
     }
   }
+  
+  Future<List<Project>> getEnrolledProjects() async {
+    try {
+      final token = await _authService.getToken();
+      if (token == null) {
+        throw Exception('No authentication token');
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/projects/enrolled'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> projectsJson = responseData['projects'] ?? [];
+        return projectsJson.map((json) => Project.fromJson(json)).toList();
+      } else if (response.statusCode == 401) {
+        throw Exception('Session expired');
+      } else {
+        throw Exception('Failed to load enrolled projects');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
