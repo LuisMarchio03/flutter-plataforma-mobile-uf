@@ -105,9 +105,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
               final allProjects = snapshot.data?[0] ?? [];
               final enrolledProjects = snapshot.data?[1] ?? [];
               
+              // Verificar se há projetos inscritos antes de tentar filtrar
+              print('Total de projetos inscritos: ${enrolledProjects.length}');
+              for (var project in enrolledProjects) {
+                print('Projeto inscrito: ${project.title}, Status: ${project.status}');
+              }
+              
               // Dividir projetos inscritos entre pendentes e em andamento
+              // Certifique-se de que o status está sendo corretamente atribuído no ProjectService
               final pendingProjects = enrolledProjects.where((p) => p.status == 'pending').toList();
               final ongoingEnrolledProjects = enrolledProjects.where((p) => p.status == 'approved').toList();
+              
+              print('Projetos pendentes: ${pendingProjects.length}');
+              print('Projetos aprovados: ${ongoingEnrolledProjects.length}');
               
               // Filtrar projetos disponíveis (excluindo os inscritos)
               final enrolledIds = enrolledProjects.map((p) => p.id).toSet();
