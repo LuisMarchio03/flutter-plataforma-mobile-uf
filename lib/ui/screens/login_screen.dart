@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
-
-// Isso deve ser isolado no login_controller.dart depois
-class LoginController {
-  bool login(String email, String password) {
-    // Lógica mock (exemplo)
-    return email == "admin@aloy.dev" && password == "123456";
-  }
-}
-// FIM CONTROLLER
+import '../../controllers/login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,6 +12,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,42 +99,64 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(24),
                       ),
                     ),
-                    onPressed: () {
-                        final email = _emailController.text.trim();
-                        final password = _passwordController.text.trim();
+                    onPressed: () async {
+                      final email = _emailController.text.trim();
+                      final password = _passwordController.text.trim();
 
-                        print("Email: $email");
-                        print("Senha: $password");
+                      if (email.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Por favor, preencha todos os campos."),
+                          ),
+                        );
+                        return;
+                      }
 
-                        if (email.isEmpty || password.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Por favor, preencha todos os campos."),
-                            ),
-                            );
-                            return;
-                        }
+                      setState(() {
+                        _isLoading = true;
+                      });
 
+                      try {
                         final loginController = LoginController();
-                        final isAuthenticated = loginController.login(email, password);
+                        final isAuthenticated = await loginController.login(email, password);
 
                         if (isAuthenticated) {
-                            Navigator.pushReplacementNamed(context, '/home');
+                          Navigator.pushReplacementNamed(context, '/home');
                         } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text("Credenciais inválidas."),
+                              content: Text("Credenciais inválidas."),
                             ),
-                            );
+                          );
                         }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Erro ao conectar com o servidor."),
+                          ),
+                        );
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
                     },
-                    child: const Text(
-                      "Entrar",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          "Entrar",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                   )
                 ],
               )

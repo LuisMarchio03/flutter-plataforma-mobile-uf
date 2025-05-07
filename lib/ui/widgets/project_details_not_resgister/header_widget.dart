@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
+import '../../../models/project.dart';
 
 class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({super.key});
+  final Project project;
+  
+  const HeaderWidget({
+    super.key,
+    required this.project,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+         margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF161B2E),
-        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xFF181C2F),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Desenvolvimento de Aplicativo Educacional",
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
+          Text(
+            project.title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 16),
-          const Divider(color: Color(0xFFE91E63), thickness: 5),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3D2232),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: const Text("Aberto", style: TextStyle(color: Colors.pinkAccent)),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                decoration: BoxDecoration(
-                  color: Colors.pinkAccent,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: const Text("40 horas", style: TextStyle(color: Colors.white)),
-              ),
-            ],
+          const SizedBox(height: 8),
+          Text(
+            'ID: ${project.id}',
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Status: ${project.status}',
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Descrição: ${project.description}',
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+            ),
           ),
         ],
       ),

@@ -1,38 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/ui/widgets/project_details_not_resgister/first_card.dart';
+import '../../../models/project.dart';
 
 class DatesCard extends StatelessWidget {
-  const DatesCard({super.key});
+  final Project project;
+  
+  const DatesCard({
+    super.key,
+    required this.project,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer(
-      title: "Cronograma",
-      children: const [
-        _DateRow(label: "Início das Inscrições:", date: "01/06/2025"),
-        _DateRow(label: "Encerramento das Inscrições:", date: "15/06/2025"),
-        _DateRow(label: "Início do Projeto:", date: "20/06/2025"),
-      ],
-    );
-  }
-}
-
-class _DateRow extends StatelessWidget {
-  final String label;
-  final String date;
-
-  const _DateRow({required this.label, required this.date});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF181C2F),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: Text(label, style: const TextStyle(color: Colors.white))),
-          Text(date, style: const TextStyle(color: Colors.pinkAccent)),
+          const Text(
+            'Datas Importantes',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          _buildDateItem('Data de criação', _formatDate(project.createdAt)),
+          _buildDateItem('Última atualização', _formatDate(project.updatedAt)),
+          _buildDateItem('Prazo estimado', 'A definir'),
         ],
       ),
     );
+  }
+  
+  Widget _buildDateItem(String label, String date) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            date,
+            style: const TextStyle(color: Colors.white70),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

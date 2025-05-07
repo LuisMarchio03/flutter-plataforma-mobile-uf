@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
+import '../../../models/project.dart';
 
 class FirstCard extends StatelessWidget {
-  const FirstCard({super.key});
+  final Project project;
+  
+  const FirstCard({
+    super.key,
+    required this.project,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer(
-      title: "Descrição Resumida",
-      children: const [
-        Text(
-          "Este projeto visa desenvolver um aplicativo educacional para auxiliar estudantes do ensino fundamental no aprendizado de matemática básica através de jogos interativos e desafios personalizados.",
-          style: TextStyle(color: Colors.white),
-        )
-      ],
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF181C2F),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Descrição',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            project.description,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

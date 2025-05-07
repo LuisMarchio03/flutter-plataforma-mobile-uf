@@ -1,49 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/ui/widgets/project_details_not_resgister/first_card.dart';
 
 class FaqCard extends StatelessWidget {
   const FaqCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SectionContainer(
-      title: "Dúvidas Frequentes",
-      children: const [
-        _FaqItem(
-          question: "Quem pode participar?",
-          answer: "Qualquer aluno da instituição com interesse em desenvolvimento mobile.",
-        ),
-        _FaqItem(
-          question: "Receberei certificado?",
-          answer: "Sim, após a conclusão do projeto e entrega final.",
-        ),
-        _FaqItem(
-          question: "Posso usar isso como horas complementares?",
-          answer: "Sim, o projeto conta como atividade de extensão acadêmica.",
-        ),
-      ],
-    );
-  }
-}
-
-class _FaqItem extends StatelessWidget {
-  final String question;
-  final String answer;
-
-  const _FaqItem({required this.question, required this.answer});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF181C2F),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(question, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          Text(answer, style: const TextStyle(color: Colors.white70)),
+          const Text(
+            'Perguntas Frequentes',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildFaqItem(
+            'Como funciona o processo de seleção?',
+            'O processo de seleção é feito através da análise do perfil do aluno e sua compatibilidade com o projeto.'
+          ),
+          _buildFaqItem(
+            'Posso me inscrever em mais de um projeto?',
+            'Sim, você pode se inscrever em quantos projetos desejar, mas só poderá participar de um por vez.'
+          ),
+          _buildFaqItem(
+            'Como saberei se fui selecionado?',
+            'Você receberá uma notificação no aplicativo e um e-mail informando sobre sua seleção.'
+          ),
         ],
       ),
+    );
+  }
+  
+  Widget _buildFaqItem(String question, String answer) {
+    return ExpansionTile(
+      title: Text(
+        question,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      collapsedIconColor: Colors.white,
+      iconColor: Colors.pinkAccent,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            answer,
+            style: const TextStyle(color: Colors.white70),
+          ),
+        ),
+      ],
     );
   }
 }
